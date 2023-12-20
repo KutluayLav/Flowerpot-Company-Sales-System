@@ -50,7 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginUserRequest loginUserRequest) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginUserRequest loginUserRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -65,7 +65,7 @@ public class AuthController {
                 logger.info("kullanici token:"+ token);
 
                 logger.info("Giriş yapan kullanıcı bilgi: " + authentication);
-                return ResponseEntity.ok("User logged in successfully");
+                return ResponseEntity.ok(token);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: Authentication failed");
             }
