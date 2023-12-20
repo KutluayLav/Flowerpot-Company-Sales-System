@@ -1,10 +1,9 @@
 package com.lavo.CompanyBackend.AppUser.controller;
-import com.lavo.CompanyBackend.AppUser.dto.ChangePasswordRequest;
-import com.lavo.CompanyBackend.AppUser.dto.CreateAccountRequest;
-import com.lavo.CompanyBackend.AppUser.dto.DetailsUserRequest;
-import com.lavo.CompanyBackend.AppUser.dto.LoginUserRequest;
-import com.lavo.CompanyBackend.AppUser.exception.LoginException;
+import com.lavo.CompanyBackend.AppUser.requestDto.*;
 import com.lavo.CompanyBackend.AppUser.exception.SignUpException;
+import com.lavo.CompanyBackend.AppUser.responsesDto.AuthResponse;
+import com.lavo.CompanyBackend.AppUser.responsesDto.DetailsUserResponse;
+import com.lavo.CompanyBackend.AppUser.responsesDto.SignUpResponse;
 import com.lavo.CompanyBackend.AppUser.service.JwtService;
 import com.lavo.CompanyBackend.AppUser.service.UserService;
 import jakarta.validation.Valid;
@@ -16,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -40,17 +40,27 @@ public class AuthController {
     @PostMapping("/signup")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    public ResponseEntity<?> signUp(@Valid @RequestBody CreateAccountRequest createAccountRequest) {
+    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody CreateAccountRequest createAccountRequest) {
+
+        SignUpResponse signUpResponse= new SignUpResponse();
+        signUpResponse.setName(createAccountRequest.getName());
+        signUpResponse.setEmail(createAccountRequest.getEmail());
+
         try {
             userService.createUser(createAccountRequest);
-            return ResponseEntity.ok("User registered successfully");
+            signUpResponse.setMessage("User registered successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(signUpResponse);
         } catch (SignUpException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User registration failed: " + ex.getMessage());
+            signUpResponse.setMessage("User registration failed: "+ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(signUpResponse);
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginUserRequest loginUserRequest) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginUserRequest loginUserRequest) {
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setEmail(loginUserRequest.getEmail());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -58,19 +68,22 @@ public class AuthController {
                             loginUserRequest.getPassword()
                     )
             );
+
             if (authentication != null && authentication.isAuthenticated()) {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 String token = jwtService.generateToken(userDetails.getUsername());
 
-                logger.info("kullanici token:"+ token);
+                authResponse.setAccessToken(token);
+                authResponse.setMessage("Login Success");
 
-                logger.info("Giriş yapan kullanıcı bilgi: " + authentication);
-                return ResponseEntity.ok(token);
+                return ResponseEntity.ok(authResponse);
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: Authentication failed");
+                authResponse.setMessage("Login failed: Authentication failed");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponse);
             }
-        } catch (LoginException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + ex.getMessage());
+        } catch (AuthenticationException ex) {
+            authResponse.setMessage("Login failed: Incorrect username or password,"+ex.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponse);
         }
     }
 
@@ -84,7 +97,6 @@ public class AuthController {
             return new ResponseEntity<>("Error during logout", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PostMapping("/changepassword")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         return ResponseEntity.ok("Password changed successfully");
@@ -92,18 +104,23 @@ public class AuthController {
 
 
     @GetMapping("/getuserinfo")
-    public ResponseEntity<String> getUserInfo(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            try {
-                String token = authorizationHeader.substring(7);
-                String username = jwtService.extractUser(token);
-                DetailsUserRequest user = userService.getUserDetails();
-                return ResponseEntity.ok("User info: " + username+"  :"+user);
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed:"+authorizationHeader);
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+    public ResponseEntity<DetailsUserResponse> getUserDetailsFromToken(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new DetailsUserResponse());
+        }
+        try {
+            String token = authorizationHeader.substring(7);
+            String username = jwtService.extractUser(token);
+            DetailsUserResponse user = userService.getUserDetails();
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            DetailsUserResponse errorResponse = DetailsUserResponse.builder()
+                    .firstname("Authentication failed")
+                    .lastname("Authentication failed")
+                    .email("Authentication failed: " + e.getMessage())
+                    .phoneNo("Authentication failed: " + e.getMessage())
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
 }

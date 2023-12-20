@@ -1,4 +1,4 @@
-package com.lavo.CompanyBackend.AppUser.dto;
+package com.lavo.CompanyBackend.AppUser.requestDto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

@@ -1,9 +1,8 @@
 package com.lavo.CompanyBackend.AppUser.service;
 
-import com.lavo.CompanyBackend.AppUser.controller.AuthController;
-import com.lavo.CompanyBackend.AppUser.dto.CreateAccountRequest;
-import com.lavo.CompanyBackend.AppUser.dto.DetailsUserRequest;
-import com.lavo.CompanyBackend.AppUser.dto.UserConvertDetailsUserRequest;
+import com.lavo.CompanyBackend.AppUser.requestDto.CreateAccountRequest;
+import com.lavo.CompanyBackend.AppUser.responsesDto.DetailsUserResponse;
+import com.lavo.CompanyBackend.AppUser.requestDto.UserConvertDetailsUserRequest;
 import com.lavo.CompanyBackend.AppUser.exception.UserNotFoundException;
 import com.lavo.CompanyBackend.AppUser.model.Role;
 import com.lavo.CompanyBackend.AppUser.model.User;
@@ -91,7 +90,7 @@ public class UserService implements UserDetailsService {
                 authorities
         );
     }
-    public DetailsUserRequest getUserDetails() {
+    public DetailsUserResponse getUserDetails() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -105,7 +104,7 @@ public class UserService implements UserDetailsService {
             User user = userOptional.orElseThrow(() ->
                     new UsernameNotFoundException("User not found with email: " + loggedInEmail));
 
-            DetailsUserRequest userDetails = userRequest.convertToDetailsUserRequest(user);
+            DetailsUserResponse userDetails = userRequest.convertToDetailsUserRequest(user);
 
             return userDetails;
         } catch (Exception e) {

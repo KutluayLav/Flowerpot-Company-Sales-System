@@ -1,4 +1,4 @@
-package com.lavo.CompanyBackend.AppUser.dto;
+package com.lavo.CompanyBackend.AppUser.responsesDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DetailsUserRequest {
+public class DetailsUserResponse {
 
     private String firstname;
     private String lastname;

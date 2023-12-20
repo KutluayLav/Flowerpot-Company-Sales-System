@@ -1,14 +1,15 @@
-package com.lavo.CompanyBackend.AppUser.dto;
+package com.lavo.CompanyBackend.AppUser.requestDto;
 
 import com.lavo.CompanyBackend.AppUser.model.User;
+import com.lavo.CompanyBackend.AppUser.responsesDto.DetailsUserResponse;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UserConvertDetailsUserRequest {
 
-    public DetailsUserRequest convertToDetailsUserRequest(User user) {
+    public DetailsUserResponse convertToDetailsUserRequest(User user) {
 
-        DetailsUserRequest detailsUserRequest=DetailsUserRequest.builder()
+        DetailsUserResponse detailsUserRequest= DetailsUserResponse.builder()
                 .firstname(user.getFirstName())
                 .lastname(user.getLastName())
                 .email(user.getEmail())
