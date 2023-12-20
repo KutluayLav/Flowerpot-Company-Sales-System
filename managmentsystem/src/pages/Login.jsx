@@ -19,7 +19,12 @@ export const Login = () => {
     e.preventDefault();
 
     try {
-      await loginUser(formData);
+      const response =await loginUser(formData);
+
+      const { accessToken } = response;
+
+      localStorage.setItem('accessToken', accessToken);
+      
       console.log('User Login successfully!');
       navigate('/home');
     } catch (error) {
