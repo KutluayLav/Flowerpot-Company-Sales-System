@@ -12,9 +12,9 @@ const api = axios.create({
 export const loginUser = async (userData) => {
   try {
     const response = await api.post('/api/auth/login', userData);
-    return response.data;
+    return response.data.accessToken;
   } catch (error) {
-    throw error.response.data;
+    throw error.response.data.accessToken;
   }
 };
 
@@ -38,5 +38,18 @@ export const getUserInfo = async (token) => {
   } catch (error) {
     console.error('Error fetching user info:', error);
     throw error.response.data; 
+  }
+};
+
+export const refreshAccessToken = async (refreshToken) => {
+  try {
+    const response = await api.post('/api/auth/refreshToken', {
+      token: refreshToken,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error refreshing access token:', error);
+    throw error.response.data;
   }
 };

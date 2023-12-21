@@ -1,10 +1,13 @@
 package com.lavo.CompanyBackend.AppUser.controller;
+import com.lavo.CompanyBackend.AppUser.model.RefreshToken;
 import com.lavo.CompanyBackend.AppUser.requestDto.*;
 import com.lavo.CompanyBackend.AppUser.exception.SignUpException;
 import com.lavo.CompanyBackend.AppUser.responsesDto.AuthResponse;
 import com.lavo.CompanyBackend.AppUser.responsesDto.DetailsUserResponse;
+import com.lavo.CompanyBackend.AppUser.responsesDto.RefreshTokenResponse;
 import com.lavo.CompanyBackend.AppUser.responsesDto.SignUpResponse;
 import com.lavo.CompanyBackend.AppUser.service.JwtService;
+import com.lavo.CompanyBackend.AppUser.service.RefreshTokenService;
 import com.lavo.CompanyBackend.AppUser.service.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -27,12 +30,14 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
     private Logger logger= LoggerFactory.getLogger(AuthController.class);
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtService jwtService) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtService jwtService, RefreshTokenService refreshTokenService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping("/signup")
@@ -69,10 +74,12 @@ public class AuthController {
 
             if (authentication != null && authentication.isAuthenticated()) {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                String token = jwtService.generateToken(userDetails.getUsername());
+                String accessToken = jwtService.generateToken(userDetails.getUsername());
+                RefreshToken refreshToken =refreshTokenService.createRefreshToken(userDetails.getUsername());
 
-                authResponse.setAccessToken(token);
+                authResponse.setAccessToken(accessToken);
                 authResponse.setMessage("Login Success");
+                authResponse.setToken(refreshToken.getToken());
 
                 return ResponseEntity.ok(authResponse);
             } else {
@@ -121,4 +128,19 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return refreshTokenService.findByToken(refreshTokenRequest.getToken())
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String accessToken = jwtService.generateToken(user.getEmail());
+                    return ResponseEntity.ok(RefreshTokenResponse.builder()
+                                    .accessToken(accessToken).token(refreshTokenRequest.getToken()).build());
+                }).orElseThrow(() -> new RuntimeException(
+                        "Refresh token is not in database!"));
+    }
+
+
 }
