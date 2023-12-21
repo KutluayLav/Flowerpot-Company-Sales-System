@@ -1,18 +1,14 @@
 import React from 'react'
-import Navbar from '../component/Navbar'
-import Footer from '../component/Footer'
 import UserProfile from '../component/UserProfile'
-
+import Layout from './Layout'
 
 const Profile = () => {
   return (
-    <div>
-        <Navbar/>        
-        <div className='m-60 mt-10'>
-           <UserProfile/>
-        </div>
-        <Footer/>
+    <Layout>
+    <div className='m-60 mt-10'>
+      <UserProfile/>
     </div>
+  </Layout>
   )
 }
 

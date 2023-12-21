@@ -1,17 +1,14 @@
 import React from 'react'
 import UsersTable from '../component/UsersTable'
-import Navbar from '../component/Navbar'
-import Footer from '../component/Footer'
+import Layout from './Layout'
 
 const Users = () => {
   return (
-    <div>
-    <Navbar/>
-        <div>
-            <UsersTable/>
-        </div>
-    <Footer/>
-  </div>
+    <Layout>
+     <div>
+        <UsersTable/>
+     </div>
+  </Layout>
   )
 }
 

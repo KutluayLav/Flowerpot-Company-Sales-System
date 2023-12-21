@@ -26,3 +26,23 @@ export const logoutUser = async () => {
     throw error.response.data;
   }
 };
+
+export const getUserInfo = async (token) => {
+  try {
+    const response = await api.get('/api/auth/getuserinfo', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    // Token geçerli değil veya kullanıcı oturumu kapalıysa 401 hatası alabilirsiniz
+    console.error('Error fetching user info:', error);
+
+    // Kullanıcıyı oturum açma sayfasına yönlendir
+    // Örneğin, React Router kullanılıyorsa:
+    // navigate('/login');
+
+    throw error.response.data; // Hatayı tekrar fırlat, gerekirse componentte de ele alabilirsiniz
+  }
+};

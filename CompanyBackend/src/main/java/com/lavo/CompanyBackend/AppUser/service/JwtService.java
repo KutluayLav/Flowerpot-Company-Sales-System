@@ -55,11 +55,10 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 2))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 2 * 60))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);

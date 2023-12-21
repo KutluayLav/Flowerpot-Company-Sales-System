@@ -1,17 +1,14 @@
 import React from 'react'
-import Navbar from '../component/Navbar'
 import ProductsTable from '../component/ProductsTable'
-import Footer from '../component/Footer'
+import Layout from './Layout'
 
 const Products = () => {
   return (
+    <Layout>
     <div>
-        <Navbar/>
-        <div className='mt-10'>
-            <ProductsTable/>
-        </div> 
-        <Footer/>
+      <ProductsTable/>
     </div>
+  </Layout>
   )
 }
 
