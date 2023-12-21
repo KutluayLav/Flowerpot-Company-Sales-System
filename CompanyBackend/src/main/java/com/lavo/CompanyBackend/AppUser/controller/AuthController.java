@@ -7,7 +7,6 @@ import com.lavo.CompanyBackend.AppUser.responsesDto.SignUpResponse;
 import com.lavo.CompanyBackend.AppUser.service.JwtService;
 import com.lavo.CompanyBackend.AppUser.service.UserService;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
