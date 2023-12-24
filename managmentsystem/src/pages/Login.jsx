@@ -21,10 +21,14 @@ export const Login = () => {
     try {
       const response =await loginUser(formData);
 
-      const { accessToken } = response;
+      const { accessToken, token } = response.data;
 
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('token', token);
       
+      console.log(localStorage.getItem('accessToken'));
+      console.log(localStorage.getItem('token'));
+
       console.log('User Login successfully!');
       navigate('/home');
     } catch (error) {

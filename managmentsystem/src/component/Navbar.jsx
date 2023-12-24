@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserInfo, logoutUser } from '../api/loginRequest';
+import { getUserInfo, logoutUser,refreshAccessToken } from '../api/loginRequest';
 
 
 const initialNavigation  = [
@@ -24,7 +24,7 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const fetchUserInfoAndToken = async () => {
       try {
         const token = localStorage.getItem('accessToken');
         if (token) {
@@ -32,11 +32,34 @@ export default function Navbar() {
           setUser(userInfo);
         }
       } catch (error) {
-        console.error('Error fetching user info:', error);
+        if (error.response && error.response.status === 403) {
+          // Eğer token süresi dolmuşsa, yenileme denemesi yap
+          try {
+            const refreshToken = localStorage.getItem('token');
+            if (refreshToken) {
+              const newAccessToken = await refreshAccessToken(refreshToken);
+              // Yeni access token'ı localStorage'e kaydet
+              localStorage.setItem('accessToken', newAccessToken.accessToken);
+              // Yeni access token ile kullanıcı bilgilerini tekrar al
+              const userInfo = await getUserInfo(newAccessToken.accessToken);
+              setUser(userInfo);
+            } else {
+              console.error("refreshToken gecersiz cıkıs yapiliyor");
+              handleLogout();
+            }
+          } catch (refreshError) {
+            // Yenileme başarısız olursa, giriş sayfasına yönlendir
+            handleLogout();
+            console.error('Token yenileme hatasi:', refreshError);
+          }
+        } else {
+          // Diğer hatalar için, giriş sayfasına yönlendir
+          handleLogout();
+          console.error('Kullanici bilgileri alinamadi:', error);
+        }
       }
     };
-
-    fetchUserInfo();
+    fetchUserInfoAndToken();
   }, []);
 
   const handleLogout = async () => {
@@ -44,12 +67,14 @@ export default function Navbar() {
       await logoutUser();
       setUser(null);
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken'); 
       navigate('/login');
-      console.log('Cikis işlemi başarili');
+      console.log('Cikis basarili');
     } catch (error) {
-      console.error('Cikis işlemi hatasi:', error);
+      console.error('Cikis hatasi:', error);
     }
   };
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -128,7 +153,7 @@ export default function Navbar() {
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
-                      <div class="px-4 py-3 text-sm text-gray-900 dark:text-white shadow-lg">
+                      <div class="px-4 py-3 text-xs text-gray-900 dark:shadow-lg">
                           <div>{user ? `${user.firstname} ${user.lastname}` : 'Loading...'}</div>
                           <div class="font-medium truncate">{user ? user.email : 'Loading...'}</div>
                       </div>
