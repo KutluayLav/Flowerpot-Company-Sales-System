@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserInfo, logoutUser,refreshAccessToken } from '../api/loginRequest';
+import { getUserInfo, logoutUser } from '../api/loginRequest';
 
 
 const initialNavigation  = [
@@ -27,36 +27,14 @@ export default function Navbar() {
     const fetchUserInfoAndToken = async () => {
       try {
         const token = localStorage.getItem('accessToken');
+        console.log("RefreshToken :",localStorage.getItem('token'));
         if (token) {
           const userInfo = await getUserInfo(token);
           setUser(userInfo);
         }
       } catch (error) {
-        if (error.response && error.response.status === 403) {
-          // Eğer token süresi dolmuşsa, yenileme denemesi yap
-          try {
-            const refreshToken = localStorage.getItem('token');
-            if (refreshToken) {
-              const newAccessToken = await refreshAccessToken(refreshToken);
-              // Yeni access token'ı localStorage'e kaydet
-              localStorage.setItem('accessToken', newAccessToken.accessToken);
-              // Yeni access token ile kullanıcı bilgilerini tekrar al
-              const userInfo = await getUserInfo(newAccessToken.accessToken);
-              setUser(userInfo);
-            } else {
-              console.error("refreshToken gecersiz cıkıs yapiliyor");
-              handleLogout();
-            }
-          } catch (refreshError) {
-            // Yenileme başarısız olursa, giriş sayfasına yönlendir
-            handleLogout();
-            console.error('Token yenileme hatasi:', refreshError);
-          }
-        } else {
-          // Diğer hatalar için, giriş sayfasına yönlendir
-          handleLogout();
-          console.error('Kullanici bilgileri alinamadi:', error);
-        }
+        console.error('Error refreshing access token:', error);
+        handleLogout();
       }
     };
     fetchUserInfoAndToken();

@@ -9,6 +9,44 @@ const api = axios.create({
   },
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Eğer hata durumu 403 ise ve orijinal istek daha önce tekrar deneme yapılmamışsa
+    // Bu durumda token'in süresi dolmuş demektir ve yenileme işlemi yapılmalı
+    if (error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        // localStorage'dan refreshToken'i al
+        const refreshToken = localStorage.getItem('token');
+        
+        // refreshToken ile yeni bir token almak için sunucuya istek yap
+        const refreshResponse = await api.post('/api/auth/refreshToken', {
+          token: refreshToken,
+        });
+
+        // Yeniden alınan access token'i localStorage'a kaydet
+        const newAccessToken = refreshResponse.data.accessToken;
+        localStorage.setItem('accessToken', newAccessToken);
+
+        // Yeniden alınan token ile orijinal isteği tekrarla
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        console.error('Access token yenileme hatası:', refreshError);
+        // Token yenileme hatasıyla başa çık veya giriş sayfasına yönlendir
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // Diğer hata durumlarında promise'ı reddet
+    return Promise.reject(error);
+  }
+);
+
 export const loginUser = async (userData) => {
   try {
     const response = await api.post('/api/auth/login', userData);
@@ -36,26 +74,11 @@ export const getUserInfo = async (token) => {
     });
     return response.data;
   } catch (error) {
-    if (error.response && error.response.status === 403) {
-      const refreshedToken = await refreshAccessToken(localStorage.getItem('refreshToken'));
-      
-      try {
-        const newResponse = await api.get('/api/auth/getuserinfo', {
-          headers: {
-            Authorization: `Bearer ${refreshedToken.accessToken}`,
-          },
-        });
-        return newResponse.data;
-      } catch (newError) {
-        console.error('Error fetching user info with refreshed token:', newError);
-        throw newError.response.data;
-      }
-    } else {
-      console.error('Error fetching user info:', error);
-      throw error.response.data;
-    }
+    console.error('Error fetching user info:', error);
+    throw error.response.data; 
   }
 };
+
 export const refreshAccessToken = async (refreshToken) => {
   try {
     const response = await api.post('/api/auth/refreshToken', {
