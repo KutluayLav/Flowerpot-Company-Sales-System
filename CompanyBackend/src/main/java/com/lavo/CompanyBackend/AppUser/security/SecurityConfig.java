@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -36,13 +37,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+                .and()
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(x ->
                         x.requestMatchers("/api/auth/**","/api/auth/signup/**", "/api/auth/login/**","/api/auth/refreshToken/**").permitAll()
                 )
                 .authorizeHttpRequests(x ->
-
-                        x.requestMatchers("/api/auth/getuserinfo").authenticated()
+                        x.requestMatchers("/api/auth/getuserinfo","/api/auth/refreshToken/**").authenticated()
                                 .requestMatchers("/api/auth/admin").hasRole("ADMIN")
                 )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

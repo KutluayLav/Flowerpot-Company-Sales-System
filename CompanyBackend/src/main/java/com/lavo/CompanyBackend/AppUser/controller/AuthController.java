@@ -46,7 +46,7 @@ public class AuthController {
     public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody CreateAccountRequest createAccountRequest) {
 
         SignUpResponse signUpResponse= new SignUpResponse();
-        signUpResponse.setName(createAccountRequest.getName());
+        signUpResponse.setName(createAccountRequest.getFirstname());
         signUpResponse.setEmail(createAccountRequest.getEmail());
 
         try {
@@ -106,7 +106,6 @@ public class AuthController {
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         return ResponseEntity.ok("Password changed successfully");
     }
-
 
     @GetMapping("/getuserinfo")
     public ResponseEntity<DetailsUserResponse> getUserDetailsFromToken(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {

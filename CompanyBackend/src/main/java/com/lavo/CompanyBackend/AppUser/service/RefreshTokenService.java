@@ -4,6 +4,7 @@ import com.lavo.CompanyBackend.AppUser.model.RefreshToken;
 import com.lavo.CompanyBackend.AppUser.model.User;
 import com.lavo.CompanyBackend.AppUser.repository.RefreshTokenRepository;
 import com.lavo.CompanyBackend.AppUser.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ import java.util.UUID;
 @Service
 public class RefreshTokenService {
 
+
+    @Value("${jwt.refreshexpiration}")
+    private long refreshExpired;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
@@ -31,13 +35,13 @@ public class RefreshTokenService {
 
             if (existingToken.isPresent()) {
                 RefreshToken refreshToken = existingToken.get();
-                refreshToken.setExpiryDate(Instant.now().plusMillis(600000));
+                refreshToken.setExpiryDate(Instant.now().plusMillis(refreshExpired));
                 return refreshTokenRepository.save(refreshToken);
             } else {
                 RefreshToken refreshToken = RefreshToken.builder()
                         .user(user)
                         .token(UUID.randomUUID().toString())
-                        .expiryDate(Instant.now().plusMillis(600000))
+                        .expiryDate(Instant.now().plusMillis(refreshExpired))
                         .build();
 
                 return refreshTokenRepository.save(refreshToken);

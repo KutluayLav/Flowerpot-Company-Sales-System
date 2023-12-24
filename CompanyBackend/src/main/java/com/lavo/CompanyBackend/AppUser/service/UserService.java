@@ -54,8 +54,8 @@ public class UserService implements UserDetailsService {
         logger.info("createuser Verileri alındı :"+request);
 
         User newUser = User.builder()
-                .firstName(request.getName())
-                .lastName(request.getName())
+                .firstName(request.getFirstname())
+                .lastName(request.getLastname())
                 .email(request.getEmail())
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
                 .phoneNo(request.getPhoneNo())
