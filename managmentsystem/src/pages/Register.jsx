@@ -6,7 +6,8 @@ import React, { useState } from 'react';
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    firstname: '',
+    lastname:'',
     email: '',
     phoneNo: '',
     password: '',
@@ -44,18 +45,31 @@ const Register = () => {
         </h2>
         <form onSubmit={handleFormSubmit}>
         <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-600 text-sm mb-2">
-              Ad Soyad
+            <label htmlFor="firstname" className="block text-gray-600 text-sm mb-2">
+              Ad
             </label>
             <input
-              type="name"
-              id="name"
+              type="text"
+              id="firstname"
               onChange={handleInputChange}
-              value={formData.name}
+              value={formData.firstname}
               className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
-              placeholder="isim soyisim giriniz"
-            />   
-          </div>
+              placeholder="İsim giriniz"
+            />
+        </div>
+             <div className="mb-4">
+                <label htmlFor="lastname" className="block text-gray-600 text-sm mb-2">
+                  Soyad
+                </label>
+                <input
+                  type="text"
+                  id="lastname"
+                  onChange={handleInputChange}
+                  value={formData.lastname}
+                  className="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+                  placeholder="Soyisim giriniz"
+                />
+            </div>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-600 text-sm mb-2">
               E-posta
