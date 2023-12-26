@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fa20a60a-c3ae-4a57-a595-55a4a7163e9a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/dto/requestDto/CreateCategoryRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/dto/requestDto/CreateProductRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/dto/requestDto/UpdateProductRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/exception/FileNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/exception/FileUploadException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/model/Category.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/model/FileData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/model/Product.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/repository/CategoryRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/repository/FileDataRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/repository/ProductRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/service/CategoryServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/service/FileDataService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/service/ProductServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/service/impl/CategoryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppManagment/service/impl/ProductService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/config/PasswordEncoderConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/exception/LoginException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/exception/SignUpException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/exception/UserNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/model/RefreshToken.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/model/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/repository/RefreshTokenRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/requestDto/ChangePasswordRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/requestDto/CreateAccountRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/requestDto/LoginUserRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/requestDto/RefreshTokenRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/requestDto/UserConvertDetailsUserRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/responsesDto/AuthResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/responsesDto/DetailsUserResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/responsesDto/RefreshTokenResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/responsesDto/SignUpResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/security/JwtAuthFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/security/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/service/JwtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/service/RefreshTokenService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/AppUser/service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lavo/CompanyBackend/CompanyBackendApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/lavo/CompanyBackend/CompanyBackendApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2ZXUdc3i8JVdrQBCxb7EWwYINVa" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TODO_SCOPE": "All Places",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/kutlu/OneDrive/Masaüstü/companymanagmentSystem/User-Service",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "spring.configuration.checksum": "238ab3133f27e79bb575a52cba8215cb",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="CompanyBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="User-Service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.lavo.CompanyBackend.CompanyBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fa20a60a-c3ae-4a57-a595-55a4a7163e9a" name="Changes" comment="" />
+      <created>1702568006074</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1702568006074</updated>
+      <workItem from="1702568007084" duration="19199000" />
+      <workItem from="1702656348119" duration="10197000" />
+      <workItem from="1702830953615" duration="3107000" />
+      <workItem from="1702890500963" duration="3298000" />
+      <workItem from="1702894487018" duration="2345000" />
+      <workItem from="1702929749193" duration="7894000" />
+      <workItem from="1703073050502" duration="2793000" />
+      <workItem from="1703079881123" duration="888000" />
+      <workItem from="1703080788219" duration="6554000" />
+      <workItem from="1703107941102" duration="13868000" />
+      <workItem from="1703162513221" duration="4228000" />
+      <workItem from="1703170484320" duration="1942000" />
+      <workItem from="1703172467464" duration="6832000" />
+      <workItem from="1703415573253" duration="8478000" />
+      <workItem from="1703431906660" duration="6418000" />
+      <workItem from="1703444492157" duration="1318000" />
+      <workItem from="1703448978669" duration="1573000" />
+      <workItem from="1703596818916" duration="13177000" />
+      <workItem from="1703614701756" duration="1368000" />
+      <workItem from="1703616103532" duration="35000" />
+      <workItem from="1703616162701" duration="11000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat:return token">
+      <option name="closed" value="true" />
+      <created>1703079958917</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1703079958917</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat:return token">
+      <option name="closed" value="true" />
+      <created>1703080031197</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1703080031197</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat:return commond line">
+      <option name="closed" value="true" />
+      <created>1703080093675</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1703080093675</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat:responses">
+      <option name="closed" value="true" />
+      <created>1703083572212</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1703083572212</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat:responsesdone">
+      <option name="closed" value="true" />
+      <created>1703089508204</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1703089508204</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat:responsesdone">
+      <option name="closed" value="true" />
+      <created>1703107972422</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1703107972422</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat:responsesdone">
+      <option name="closed" value="true" />
+      <created>1703107989472</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1703107989472</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat:responsesdone">
+      <option name="closed" value="true" />
+      <created>1703108019879</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1703108019879</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat:controller fixxed">
+      <option name="closed" value="true" />
+      <created>1703176284218</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1703176284218</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fix:refreshtokenexpired fixxed">
+      <option name="closed" value="true" />
+      <created>1703431984469</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1703431984469</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat:register user firstname and last name feated">
+      <option name="closed" value="true" />
+      <created>1703444361529</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1703444361529</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat:register user firstname and last name feated">
+      <option name="closed" value="true" />
+      <created>1703444418753</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1703444418753</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/master" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat:return token" />
+    <MESSAGE value="feat:return commond line" />
+    <MESSAGE value="feat:responses" />
+    <MESSAGE value="feat:responsesdone" />
+    <MESSAGE value="feat:controller fixxed" />
+    <MESSAGE value="fix:refreshtokenexpired fixxed" />
+    <MESSAGE value="feat:register user firstname and last name feated" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat:register user firstname and last name feated" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.hibernate.MappingException" package="org.hibernate" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
