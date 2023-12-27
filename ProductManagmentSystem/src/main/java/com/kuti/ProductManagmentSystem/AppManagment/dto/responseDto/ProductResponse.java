@@ -21,7 +21,7 @@ public class ProductResponse {
 
     private BigDecimal price;
 
-    private long quantity;
+    private Long quantity;
 
 
 

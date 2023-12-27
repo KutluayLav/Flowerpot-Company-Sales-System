@@ -2,6 +2,8 @@ package com.kuti.ProductManagmentSystem.AppManagment.service;
 
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.UpdateProductRequest;
+import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
+import com.kuti.ProductManagmentSystem.AppManagment.exception.ProductNotFoundException;
 import com.kuti.ProductManagmentSystem.AppManagment.model.FileData;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.ProductRepository;
@@ -54,8 +56,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String deleteProduct(Long id) {
-        return null;
+    public ProductResponse deleteProduct(Long productId)  {
+        Product existingProduct = productRepository.findById(productId).orElse(null);
+
+        ProductResponse productResponse=ProductResponse.builder()
+                .message("Product Deleted Successfully")
+                .build();
+
+        try {
+            fileDataService.deleteImage(existingProduct.getFileData().getId());
+        } catch (IOException e) {
+            throw new RuntimeException("Image cannot be deleted!!!"+e);
+        }
+
+        if (existingProduct != null) {
+            productRepository.delete(existingProduct);
+            return productResponse;
+        } else {
+            throw new ProductNotFoundException("Product not exist"+productId);
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.kuti.ProductManagmentSystem.AppManagment.controller;
 
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
+import com.kuti.ProductManagmentSystem.AppManagment.service.ProductServiceImpl;
 import com.kuti.ProductManagmentSystem.AppManagment.service.impl.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,34 +18,25 @@ import java.io.IOException;
 @RequestMapping("/product/v1")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
-
-
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
 
     private final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductServiceImpl productService) {
         this.productService = productService;
     }
 
     @PostMapping("/addProduct")
     public ResponseEntity<ProductResponse> createProduct(@ModelAttribute("product") CreateProductRequest createProductRequest,
                                                          @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
-
         logger.info("Create Product :"+createProductRequest);
 
         if (createProductRequest == null || imageFile == null) {
-
-            ProductResponse productResponse = ProductResponse.builder()
-                    .name(createProductRequest.getProductName())
-                    .price(createProductRequest.getPrice())
-                    .quantity(createProductRequest.getQuantity())
-                    .description(createProductRequest.getDescription())
-                    .message("product could not be created")
-                    .build();
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(productResponse);
+            return ResponseEntity.badRequest().body(ProductResponse.builder()
+                    .message("Invalid input. Product could not be created.")
+                    .build());
         }
+
         productService.saveProduct(createProductRequest,imageFile);
 
         ProductResponse productResponse = ProductResponse.builder()
@@ -58,4 +50,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
     }
 
+    @GetMapping("/delete/{productId}")
+    public ResponseEntity<ProductResponse> deleteProduct(@PathVariable long productId) {
+        ProductResponse productResponse=productService.deleteProduct(productId);
+        return ResponseEntity.ok(productResponse);
+    }
+
+    @GetMapping("/deleteProductImage/{productId}")
+    public ResponseEntity<?> deleteProductImage(@PathVariable long productId){
+        
+    }
 }

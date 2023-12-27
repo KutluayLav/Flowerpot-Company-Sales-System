@@ -2,6 +2,7 @@ package com.kuti.ProductManagmentSystem.AppManagment.service.impl;
 
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.UpdateProductRequest;
+import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ public interface ProductService {
 
     public Product getProductById(Long id);
 
-    public String deleteProduct(Long id);
+    public ProductResponse deleteProduct(Long id);
 
     public Product editProduct(UpdateProductRequest updateProductRequest, Long id);
 }
