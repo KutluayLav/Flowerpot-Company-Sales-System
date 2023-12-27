@@ -57,7 +57,9 @@ public class ProductController {
     }
 
     @GetMapping("/deleteProductImage/{productId}")
-    public ResponseEntity<?> deleteProductImage(@PathVariable long productId){
-        
+    public ResponseEntity<ProductResponse> deleteProductImage(@PathVariable long productId){
+        ProductResponse productResponse=productService.deleteImage(productId);
+        return ResponseEntity.ok(productResponse);
+
     }
 }

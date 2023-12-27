@@ -19,5 +19,6 @@ public interface ProductService {
 
     public ProductResponse deleteProduct(Long id);
 
+    public ProductResponse deleteImage(Long id);
     public Product editProduct(UpdateProductRequest updateProductRequest, Long id);
 }

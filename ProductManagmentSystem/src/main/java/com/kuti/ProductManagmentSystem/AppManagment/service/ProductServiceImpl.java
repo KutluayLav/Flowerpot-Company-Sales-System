@@ -78,6 +78,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponse deleteImage(Long productId) {
+        Product existingProduct = productRepository.findById(productId).orElse(null);
+
+        ProductResponse productResponse=ProductResponse.builder()
+                .message("Product Image Deleted Successfully")
+                .build();
+        try {
+            fileDataService.deleteImage(existingProduct.getFileData().getId());
+            existingProduct.setFileData(null);
+        } catch (IOException e) {
+            throw new RuntimeException("Image cannot be deleted!!!"+e);
+        }
+
+        return productResponse;
+
+    }
+
+    @Override
     public Product editProduct(UpdateProductRequest updateProductRequest, Long id) {
         return null;
     }
