@@ -28,8 +28,8 @@ public class ProductController {
     }
 
     @PostMapping("/addProduct")
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest createProductRequest,
-                                                         @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<ProductResponse> createProduct(@ModelAttribute("product") CreateProductRequest createProductRequest,
+                                                         @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
 
         logger.info("Create Product :"+createProductRequest);
 

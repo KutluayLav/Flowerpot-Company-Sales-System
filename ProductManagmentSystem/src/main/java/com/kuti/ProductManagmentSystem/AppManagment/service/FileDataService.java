@@ -1,9 +1,13 @@
 package com.kuti.ProductManagmentSystem.AppManagment.service;
 
+import com.kuti.ProductManagmentSystem.AppManagment.controller.ProductController;
 import com.kuti.ProductManagmentSystem.AppManagment.exception.FileNotFoundException;
 import com.kuti.ProductManagmentSystem.AppManagment.exception.FileUploadException;
 import com.kuti.ProductManagmentSystem.AppManagment.model.FileData;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.FileDataRepository;
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -12,27 +16,34 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
 public class FileDataService {
 
     private final FileDataRepository fileDataRepository;
-    private final ResourceLoader resourceLoader;
 
-    @Value("${file.upload.directory}")
-    private String FOLDER_PATH;
+    //@Value("${file.upload.directory}")
+   // private String FOLDER_PATH;
 
+    private final String FOLDER_PATH="C:\\Users\\kutlu\\OneDrive\\Masaüstü" +
+            "\\companymanagmentSystem\\ProductManagmentSystem\\src\\main\\resources\\static\\product_images\\";;
 
-    public FileDataService(FileDataRepository fileDataRepository, ResourceLoader resourceLoader) throws IOException {
+    private final Logger logger = LoggerFactory.getLogger(FileDataService.class);
+
+    public FileDataService(FileDataRepository fileDataRepository) throws IOException {
         this.fileDataRepository = fileDataRepository;
-        this.resourceLoader = resourceLoader;
     }
     public FileData uploadImageToFileSystem(MultipartFile file) throws IOException {
+        logger.info("FolderPath:"+FOLDER_PATH);
+        logger.info("File name:"+file.getOriginalFilename());
+        logger.info("File Type:"+file.getContentType());
 
-        Resource resource = resourceLoader.getResource(FOLDER_PATH);
+        String filePath = FOLDER_PATH + file.getOriginalFilename();
 
-        String filePath = resource.getFile().getAbsolutePath() + file.getOriginalFilename();
+      //  String fileName = file.getOriginalFilename();
+       // String filePath = Paths.get(FOLDER_PATH, fileName).toString();
 
         try {
             FileData fileData = fileDataRepository.save(FileData.builder()
