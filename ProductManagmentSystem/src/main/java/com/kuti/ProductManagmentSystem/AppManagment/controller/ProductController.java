@@ -1,14 +1,14 @@
 package com.kuti.ProductManagmentSystem.AppManagment.controller;
 
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateProductRequest;
+import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.UpdateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
+import com.kuti.ProductManagmentSystem.AppManagment.exception.ProductNotFoundException;
 import com.kuti.ProductManagmentSystem.AppManagment.service.ProductServiceImpl;
-import com.kuti.ProductManagmentSystem.AppManagment.service.impl.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,8 +76,30 @@ public class ProductController {
 
         return ResponseEntity.ok(allProducts);
     }
+    @PostMapping("/updateProduct/{productId}")
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest,
+                                                         @PathVariable long productId,
+                                                         @RequestParam(value = "imageFile", required = false)
+                                                             MultipartFile imageFile){
+        logger.info("Update Product with ID {}: {}", productId, updateProductRequest);
 
-
+        try {
+            ProductResponse response = productService.editProduct(updateProductRequest, productId, imageFile);
+            return ResponseEntity.ok(response);
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    ProductResponse.builder()
+                            .message("Product not found with ID: " + productId)
+                            .build()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    ProductResponse.builder()
+                            .message("Error updating product: " + e.getMessage())
+                            .build()
+            );
+        }
+    }
 
 
 }

@@ -20,5 +20,5 @@ public interface ProductService {
     public ProductResponse deleteProduct(Long id);
 
     public ProductResponse deleteImage(Long id);
-    public ProductResponse editProduct(UpdateProductRequest updateProductRequest, Long id);
+    public ProductResponse editProduct(UpdateProductRequest updateProductRequest, Long id,MultipartFile file);
 }

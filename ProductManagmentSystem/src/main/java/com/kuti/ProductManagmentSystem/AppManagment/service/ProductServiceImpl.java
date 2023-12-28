@@ -113,7 +113,46 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse editProduct(UpdateProductRequest updateProductRequest, Long id) {
-        return null;
+    public ProductResponse editProduct(UpdateProductRequest updateProductRequest, Long id, MultipartFile file) {
+        Product existingProduct = productRepository.findById(id).orElse(null);
+
+        if (existingProduct == null) {
+            throw new ProductNotFoundException("Product not exist: " + id);
+        }
+
+        if (file != null && !file.isEmpty()) {
+            try {
+                fileDataService.deleteImage(existingProduct.getFileData().getId());
+                FileData newImage = fileDataService.uploadImageToFileSystem(file);
+                existingProduct.setFileData(newImage);
+            } catch (IOException e) {
+                throw new RuntimeException("Image cannot be updated: " + e.getMessage());
+            }
+        }
+        if (updateProductRequest.getProductName() != null) {
+            existingProduct.setProductName(updateProductRequest.getProductName());
+        }
+        if (updateProductRequest.getDescription() != null) {
+            existingProduct.setDescription(updateProductRequest.getDescription());
+        }
+        if (updateProductRequest.getPrice() != null) {
+            existingProduct.setPrice(updateProductRequest.getPrice());
+        }
+        if (updateProductRequest.getFeatures() != null) {
+            existingProduct.setFeatures(updateProductRequest.getFeatures());
+        }
+        if (updateProductRequest.getQuantity() != null) {
+            existingProduct.setQuantity(updateProductRequest.getQuantity());
+        }
+        productRepository.save(existingProduct);
+
+        return ProductResponse.builder()
+                .id(existingProduct.getId())
+                .name(existingProduct.getProductName())
+                .quantity(existingProduct.getQuantity())
+                .price(existingProduct.getPrice())
+                .description(existingProduct.getDescription())
+                .message("Product Updated Successfully")
+                .build();
     }
 }

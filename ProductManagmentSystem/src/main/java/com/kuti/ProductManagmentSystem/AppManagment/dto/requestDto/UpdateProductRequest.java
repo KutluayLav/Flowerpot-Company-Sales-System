@@ -28,7 +28,7 @@ public class UpdateProductRequest {
 
     private BigDecimal price;
 
-    private long quantity;
+    private Long quantity;
 
     private FileData fileData;
 
