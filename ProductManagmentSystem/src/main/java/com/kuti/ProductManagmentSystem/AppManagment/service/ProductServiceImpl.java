@@ -1,23 +1,29 @@
 package com.kuti.ProductManagmentSystem.AppManagment.service;
 
+import com.kuti.ProductManagmentSystem.AppManagment.controller.ProductController;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.UpdateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.exception.ProductNotFoundException;
+import com.kuti.ProductManagmentSystem.AppManagment.mapper.ProductMapper;
 import com.kuti.ProductManagmentSystem.AppManagment.model.FileData;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.ProductRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.service.impl.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final FileDataService fileDataService;
+    private final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     public ProductServiceImpl(ProductRepository productRepository, FileDataService fileDataService) {
         this.productRepository = productRepository;
@@ -38,7 +44,6 @@ public class ProductServiceImpl implements ProductService {
                 .features(createProductRequest.getFeatures())
                 .category(createProductRequest.getCategory())
                 .quantity(createProductRequest.getQuantity())
-                .fileData(createProductRequest.getFileData())
                 .status(true)
                 .build();
 
@@ -46,8 +51,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProduct() {
-        return null;
+    public List<ProductResponse> getAllProduct() {
+        List<Product> allProducts = productRepository.findAll();
+
+        if (!allProducts.isEmpty()) {
+            return ProductMapper.mapToProductResponseList(allProducts);
+        }
+
+        return Collections.emptyList();
     }
 
     @Override
@@ -62,7 +73,6 @@ public class ProductServiceImpl implements ProductService {
         ProductResponse productResponse=ProductResponse.builder()
                 .message("Product Deleted Successfully")
                 .build();
-
         try {
             fileDataService.deleteImage(existingProduct.getFileData().getId());
         } catch (IOException e) {
@@ -82,21 +92,28 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct = productRepository.findById(productId).orElse(null);
 
         ProductResponse productResponse=ProductResponse.builder()
+                .name(existingProduct.getProductName())
+                .quantity(existingProduct.getQuantity())
+                .price(existingProduct.getPrice())
+                .description(existingProduct.getDescription())
                 .message("Product Image Deleted Successfully")
                 .build();
-        try {
-            fileDataService.deleteImage(existingProduct.getFileData().getId());
+
+        if(existingProduct.getFileData() !=null){
+            try {
+                fileDataService.deleteImage(existingProduct.getFileData().getId());
+                logger.info(existingProduct.getFileData().getName());
+            } catch (IOException e) {
+                throw new RuntimeException("Image cannot be deleted!!!"+e);
+            }
             existingProduct.setFileData(null);
-        } catch (IOException e) {
-            throw new RuntimeException("Image cannot be deleted!!!"+e);
+            productRepository.save(existingProduct);
         }
-
         return productResponse;
-
     }
 
     @Override
-    public Product editProduct(UpdateProductRequest updateProductRequest, Long id) {
+    public ProductResponse editProduct(UpdateProductRequest updateProductRequest, Long id) {
         return null;
     }
 }

@@ -13,12 +13,12 @@ public interface ProductService {
 
     public Product saveProduct(CreateProductRequest createProductRequest, MultipartFile multipartFile) throws IOException;
 
-    public List<Product> getAllProduct();
+    public List<ProductResponse> getAllProduct();
 
     public Product getProductById(Long id);
 
     public ProductResponse deleteProduct(Long id);
 
     public ProductResponse deleteImage(Long id);
-    public Product editProduct(UpdateProductRequest updateProductRequest, Long id);
+    public ProductResponse editProduct(UpdateProductRequest updateProductRequest, Long id);
 }

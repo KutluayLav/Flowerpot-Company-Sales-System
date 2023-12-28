@@ -36,7 +36,7 @@ public class Product {
 
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true
-            ,fetch = FetchType.LAZY)
+            ,fetch = FetchType.EAGER)
     @JoinColumn(name = "file_id")
     private FileData fileData;
 

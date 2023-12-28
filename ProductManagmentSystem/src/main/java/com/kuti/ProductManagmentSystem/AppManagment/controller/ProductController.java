@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/product/v1")
@@ -60,6 +61,23 @@ public class ProductController {
     public ResponseEntity<ProductResponse> deleteProductImage(@PathVariable long productId){
         ProductResponse productResponse=productService.deleteImage(productId);
         return ResponseEntity.ok(productResponse);
-
     }
+
+
+    @GetMapping("/getAllProducts")
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        logger.info("Get All Products");
+
+        List<ProductResponse> allProducts = productService.getAllProduct();
+
+        if (allProducts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.ok(allProducts);
+    }
+
+
+
+
 }
