@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -62,7 +63,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(Long id) {
+    public ProductResponse getProductById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+
+        if (product.isPresent()){
+            ProductResponse productResponse=ProductMapper.mapToProductResponse(product.get());
+            return productResponse;
+        }
+
         return null;
     }
 

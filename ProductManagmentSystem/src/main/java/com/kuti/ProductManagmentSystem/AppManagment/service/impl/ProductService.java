@@ -15,7 +15,7 @@ public interface ProductService {
 
     public List<ProductResponse> getAllProduct();
 
-    public Product getProductById(Long id);
+    public ProductResponse getProductById(Long id);
 
     public ProductResponse deleteProduct(Long id);
 

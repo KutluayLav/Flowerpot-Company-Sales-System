@@ -63,6 +63,18 @@ public class ProductController {
         return ResponseEntity.ok(productResponse);
     }
 
+    @GetMapping("/getProductById/{productId}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable long id){
+
+        ProductResponse productResponse =productService.getProductById(id);
+
+        if (productResponse != null){
+            return ResponseEntity.ok(productResponse);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 
     @GetMapping("/getAllProducts")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
@@ -73,7 +85,6 @@ public class ProductController {
         if (allProducts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-
         return ResponseEntity.ok(allProducts);
     }
     @PostMapping("/updateProduct/{productId}")
@@ -100,6 +111,7 @@ public class ProductController {
             );
         }
     }
+
 
 
 }
