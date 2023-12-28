@@ -152,6 +152,7 @@ public class ProductServiceImpl implements ProductService {
                 .quantity(existingProduct.getQuantity())
                 .price(existingProduct.getPrice())
                 .description(existingProduct.getDescription())
+                .fileData(existingProduct.getFileData())
                 .message("Product Updated Successfully")
                 .build();
     }
