@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface ProductService {
 
-    public Product saveProduct(CreateProductRequest createProductRequest, MultipartFile multipartFile) throws IOException;
+    public ProductResponse saveProduct(CreateProductRequest createProductRequest, MultipartFile multipartFile) throws IOException;
 
     public List<ProductResponse> getAllProduct();
 
-    public ProductResponse getProductById(Long id);
+    public ProductResponse getProductById(long id);
 
     public ProductResponse deleteProduct(Long id);
 

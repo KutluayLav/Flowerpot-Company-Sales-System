@@ -20,6 +20,18 @@ public class ProductMapper {
                 .build();
     }
 
+    public static ProductResponse mapToProductResponseCreated(Product product) {
+        return ProductResponse.builder()
+                .id(product.getId())
+                .name(product.getProductName())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
+                .description(product.getDescription())
+                .fileData(product.getFileData())
+                .message("Product Created Success:"+product.getProductName())
+                .build();
+    }
+
     public static List<ProductResponse> mapToProductResponseList(List<Product> products) {
         return products.stream()
                 .map(ProductMapper::mapToProductResponse)

@@ -20,7 +20,6 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
     private final ProductServiceImpl productService;
-
     private final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     public ProductController(ProductServiceImpl productService) {
@@ -28,25 +27,19 @@ public class ProductController {
     }
 
     @PostMapping("/addProduct")
-    public ResponseEntity<ProductResponse> createProduct(@ModelAttribute("product") CreateProductRequest createProductRequest,
-                                                         @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<ProductResponse> createProduct(
+            @ModelAttribute("product") CreateProductRequest createProductRequest,
+            @RequestParam(value = "imageFile",required = false)
+            MultipartFile imageFile) throws IOException {
         logger.info("Create Product :"+createProductRequest);
 
-        if (createProductRequest == null || imageFile == null) {
+        if (createProductRequest == null ) {
             return ResponseEntity.badRequest().body(ProductResponse.builder()
                     .message("Invalid input. Product could not be created.")
                     .build());
         }
 
-        productService.saveProduct(createProductRequest,imageFile);
-
-        ProductResponse productResponse = ProductResponse.builder()
-                .name(createProductRequest.getProductName())
-                .price(createProductRequest.getPrice())
-                .quantity(createProductRequest.getQuantity())
-                .description(createProductRequest.getDescription())
-                .message("Product Created Success")
-                .build();
+        ProductResponse productResponse= productService.saveProduct(createProductRequest,imageFile);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
     }
@@ -64,9 +57,9 @@ public class ProductController {
     }
 
     @GetMapping("/getProductById/{productId}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable long id){
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable long productId){
 
-        ProductResponse productResponse =productService.getProductById(id);
+        ProductResponse productResponse =productService.getProductById(productId);
 
         if (productResponse != null){
             return ResponseEntity.ok(productResponse);

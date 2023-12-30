@@ -1,6 +1,4 @@
 package com.kuti.ProductManagmentSystem.AppManagment.service;
-
-import com.kuti.ProductManagmentSystem.AppManagment.controller.ProductController;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.UpdateProductRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
@@ -32,23 +30,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product saveProduct(CreateProductRequest createProductRequest, MultipartFile multipartFile) throws IOException {
+    public ProductResponse saveProduct(CreateProductRequest createProductRequest, MultipartFile multipartFile)
+            throws IOException {
 
-        FileData uploadImage = fileDataService.uploadImageToFileSystem(multipartFile);
+        validateCreateProductRequest(createProductRequest);
 
-        createProductRequest.setFileData(uploadImage);
+        if (productRepository.existsByProductName(createProductRequest.getProductName())) {
+            throw new IllegalArgumentException("Product with the same name already exists.");
+        }
 
-        Product product=Product.builder()
+        FileData uploadImage = null;
+
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            uploadImage = fileDataService.uploadImageToFileSystem(multipartFile);
+        }
+
+        Product product = Product.builder()
                 .productName(createProductRequest.getProductName())
                 .description(createProductRequest.getDescription())
                 .price(createProductRequest.getPrice())
                 .features(createProductRequest.getFeatures())
                 .category(createProductRequest.getCategory())
                 .quantity(createProductRequest.getQuantity())
+                .fileData(uploadImage)
                 .status(true)
                 .build();
 
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        ProductResponse productResponse =ProductMapper.mapToProductResponseCreated(savedProduct);
+
+        return productResponse;
     }
 
     @Override
@@ -63,14 +75,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getProductById(Long id) {
+    public ProductResponse getProductById(long id) {
         Optional<Product> product = productRepository.findById(id);
-
         if (product.isPresent()){
             ProductResponse productResponse=ProductMapper.mapToProductResponse(product.get());
             return productResponse;
         }
-
         return null;
     }
 
@@ -163,5 +173,11 @@ public class ProductServiceImpl implements ProductService {
                 .fileData(existingProduct.getFileData())
                 .message("Product Updated Successfully")
                 .build();
+    }
+
+    private void validateCreateProductRequest(CreateProductRequest createProductRequest) {
+        if (createProductRequest.getProductName() == null || createProductRequest.getProductName().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty.");
+        }
     }
 }
