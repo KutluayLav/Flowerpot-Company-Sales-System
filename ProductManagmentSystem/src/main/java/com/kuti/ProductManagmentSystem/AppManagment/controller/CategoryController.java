@@ -26,7 +26,7 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> addCategory(@RequestBody CreateCategoryRequest createCategoryRequest){
 
         logger.info("Added Category:"+createCategoryRequest.getName());
-        logger.info("Category List:"+createCategoryRequest.getProductList());
+        logger.info("Category Product Ids List:"+createCategoryRequest.getProductIds());
 
         try {
             CategoryResponse categoryResponse=categoryService.addCategory(createCategoryRequest);

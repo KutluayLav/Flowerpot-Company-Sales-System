@@ -17,12 +17,12 @@ services:
 
   db2:
     image: mcr.microsoft.com/mssql/server
-    container_name: SalesSystem
+    container_name: ProductSystem
     restart: always
     environment:
       SA_PASSWORD: StrongPassword123!
       ACCEPT_EULA: Y
-      MSSQL_DATABASE: SalesSystemDB
+      MSSQL_DATABASE: ProductSystemDB
       MSSQL_USER: kutluaylav
       MSSQL_PASSWORD: kutilavoiser333444
     ports:

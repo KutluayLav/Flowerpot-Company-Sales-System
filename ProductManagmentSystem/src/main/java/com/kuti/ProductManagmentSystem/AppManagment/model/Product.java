@@ -40,7 +40,7 @@ public class Product {
     @JoinColumn(name = "file_id")
     private FileData fileData;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),

@@ -14,6 +14,6 @@ public class CreateCategoryRequest {
 
     private String name;
 
-    private List<Product> productList;
+    private List<Long> productIds;
 
 }

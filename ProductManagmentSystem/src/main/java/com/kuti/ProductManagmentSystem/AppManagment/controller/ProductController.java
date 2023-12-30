@@ -31,6 +31,7 @@ public class ProductController {
             @ModelAttribute("product") CreateProductRequest createProductRequest,
             @RequestParam(value = "imageFile",required = false)
             MultipartFile imageFile) throws IOException {
+
         logger.info("Create Product :"+createProductRequest);
 
         if (createProductRequest == null ) {
@@ -80,6 +81,8 @@ public class ProductController {
         }
         return ResponseEntity.ok(allProducts);
     }
+
+    // i will fix that code for image
     @PostMapping("/updateProduct/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest,
                                                          @PathVariable long productId,

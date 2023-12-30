@@ -10,6 +10,8 @@ import com.kuti.ProductManagmentSystem.AppManagment.repository.ProductRepository
 import com.kuti.ProductManagmentSystem.AppManagment.service.impl.CategoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -24,25 +26,28 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse addCategory(CreateCategoryRequest createCategoryRequest) {
-
         validateCreateCategoryRequest(createCategoryRequest);
 
         if (categoryRepository.existsCategoryByName(createCategoryRequest.getName())) {
             throw new IllegalArgumentException("Category with the same name already exists.");
         }
 
-        Category category =Category.builder()
+        Category category = Category.builder()
                 .name(createCategoryRequest.getName())
                 .build();
 
-        if (createCategoryRequest.getProductList() != null) {
-            for (Product product : createCategoryRequest.getProductList()) {
-                product.setCategory(category);
-                productRepository.save(product);
+        List<Long> productIds = createCategoryRequest.getProductIds();
+
+        if (productIds != null && !productIds.isEmpty()) {
+            for (Long productId : productIds) {
+                Product existingProduct = productRepository.findById(productId)
+                        .orElseThrow(() -> new IllegalArgumentException("Product with ID " + productId + " not found."));
+                existingProduct.setCategory(category);
+                productRepository.save(existingProduct);
             }
         }
-        Category savedCategory =categoryRepository.save(category);
 
+        Category savedCategory = categoryRepository.save(category);
         return CategoryMapper.mapToCategoryResponse(savedCategory);
     }
 

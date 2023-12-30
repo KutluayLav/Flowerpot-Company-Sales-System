@@ -28,6 +28,7 @@ public class ProductMapper {
                 .quantity(product.getQuantity())
                 .description(product.getDescription())
                 .fileData(product.getFileData())
+                .category(product.getCategory())
                 .message("Product Created Success:"+product.getProductName())
                 .build();
     }

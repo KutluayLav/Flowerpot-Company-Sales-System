@@ -4,8 +4,10 @@ import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.UpdateProduct
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.exception.ProductNotFoundException;
 import com.kuti.ProductManagmentSystem.AppManagment.mapper.ProductMapper;
+import com.kuti.ProductManagmentSystem.AppManagment.model.Category;
 import com.kuti.ProductManagmentSystem.AppManagment.model.FileData;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
+import com.kuti.ProductManagmentSystem.AppManagment.repository.CategoryRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.ProductRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.service.impl.ProductService;
 import org.slf4j.Logger;
@@ -21,11 +23,13 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final FileDataService fileDataService;
     private final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-    public ProductServiceImpl(ProductRepository productRepository, FileDataService fileDataService) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, FileDataService fileDataService) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
         this.fileDataService = fileDataService;
     }
 
@@ -50,11 +54,19 @@ public class ProductServiceImpl implements ProductService {
                 .description(createProductRequest.getDescription())
                 .price(createProductRequest.getPrice())
                 .features(createProductRequest.getFeatures())
-                .category(createProductRequest.getCategory())
                 .quantity(createProductRequest.getQuantity())
                 .fileData(uploadImage)
                 .status(true)
                 .build();
+
+        if (createProductRequest.getCategoryName() != null && !createProductRequest.getCategoryName().isEmpty()) {
+
+            Category existingCategory = categoryRepository.findByName(createProductRequest.getCategoryName())
+                    .orElseThrow(() -> new IllegalArgumentException
+                            ("Category with Name " + createProductRequest.getCategoryName() + " not found."));
+
+            product.setCategory(existingCategory);
+        }
 
         Product savedProduct = productRepository.save(product);
 
@@ -70,7 +82,6 @@ public class ProductServiceImpl implements ProductService {
         if (!allProducts.isEmpty()) {
             return ProductMapper.mapToProductResponseList(allProducts);
         }
-
         return Collections.emptyList();
     }
 

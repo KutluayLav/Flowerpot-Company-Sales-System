@@ -1,6 +1,5 @@
 package com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto;
 
-import com.kuti.ProductManagmentSystem.AppManagment.model.Category;
 import com.kuti.ProductManagmentSystem.AppManagment.model.FileData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -31,6 +30,6 @@ public class CreateProductRequest {
 
     private FileData fileData;
 
-    private Category category;
+    private String categoryName;
 
 }

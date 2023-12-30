@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,8 +27,8 @@ public class Category {
     @NotNull(message = "Name is Cannot be Empty!")
     private String name;
 
-    @OneToMany(mappedBy = "category",orphanRemoval = true)
-    private List<Product> product;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Product> products = new HashSet<>();
 
 
 }
