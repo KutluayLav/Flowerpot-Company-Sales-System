@@ -1,13 +1,17 @@
 package com.kuti.ProductManagmentSystem.AppManagment.controller;
 
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateCategoryRequest;
+import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryNameResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryResponse;
+import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryWithProductsResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.service.CategoryServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/category/v1")
@@ -50,6 +54,18 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping("/getAllCategories")
+    public ResponseEntity<CategoryNameResponse> getAllCategories(){
+        CategoryNameResponse categoryNameResponse=categoryService.getAllCategories();
+        return ResponseEntity.ok(categoryNameResponse);
+    }
+
+    @GetMapping("/getAllCategoriesAndProducts")
+    public ResponseEntity<List<CategoryWithProductsResponse>> getAllCategoriesAndProducts() {
+        List<CategoryWithProductsResponse> response = categoryService.getAllCategoriesWithProducts();
+        return ResponseEntity.ok(response);
     }
 
 

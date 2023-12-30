@@ -1,19 +1,17 @@
 package com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto;
-
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryResponse {
-
-    private String message;
+public class CategoryWithProductsResponse {
 
     private Long id;
 
@@ -21,6 +19,6 @@ public class CategoryResponse {
 
     private String description;
 
-    private Set<Product> productList;
+    private Set<ProductResponse> productList;
 
 }

@@ -27,6 +27,8 @@ public class Category {
     @NotNull(message = "Name is Cannot be Empty!")
     private String name;
 
+    private String description;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<>();
 
