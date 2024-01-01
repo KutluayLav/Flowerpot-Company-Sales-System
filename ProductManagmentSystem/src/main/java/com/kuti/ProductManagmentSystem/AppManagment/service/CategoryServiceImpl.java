@@ -10,6 +10,8 @@ import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.CategoryRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.ProductRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.service.impl.CategoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     private final ProductRepository productRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     public CategoryServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
@@ -84,6 +88,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryWithProductsResponse> getAllCategoriesWithProducts() {
         List<Category> categories = categoryRepository.findAll();
+
+        logger.info("Categories:"+categories);
+
         return categories.stream()
                 .map(CategoryMapper::mapToCategoryWithProductsResponse)
                 .collect(Collectors.toList());
