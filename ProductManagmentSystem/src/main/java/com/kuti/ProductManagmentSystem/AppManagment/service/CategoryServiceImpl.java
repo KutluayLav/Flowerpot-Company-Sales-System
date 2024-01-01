@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
         validateCreateCategoryRequest(createCategoryRequest);
 
         if (categoryRepository.existsCategoryByName(createCategoryRequest.getName())) {
-            throw new IllegalArgumentException("Category with the same name already exists.");
+            throw new IllegalArgumentException("Aynı isimde bir kategori zaten mevcut.");
         }
 
         Category category = Category.builder()
@@ -48,15 +50,20 @@ public class CategoryServiceImpl implements CategoryService {
         List<Long> productIds = createCategoryRequest.getProductIds();
 
         if (productIds != null && !productIds.isEmpty()) {
-            for (Long productId : productIds) {
-                Product existingProduct = productRepository.findById(productId)
-                        .orElseThrow(() -> new IllegalArgumentException("Product with ID " + productId + " not found."));
+            List<Product> products = productRepository.findAllById(productIds);
 
-                existingProduct.setCategory(category);
-
-                productRepository.save(existingProduct);
+            if (products.size() != productIds.size()) {
+                throw new IllegalArgumentException("Sağlanan ID'ye sahip bir veya daha fazla ürün bulunamadı.");
             }
 
+            for (Product product : products) {
+                if (product.getCategory() != null) {
+                    throw new IllegalArgumentException("Ürün zaten bir kategoriye atanmış: " + product.getProductName());
+                }
+                product.setCategory(category);
+            }
+
+            category.setProducts(new ArrayList<>(products));
         }
 
         Category savedCategory = categoryRepository.save(category);

@@ -40,7 +40,7 @@ public class Product {
     @JoinColumn(name = "file_id")
     private FileData fileData;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
