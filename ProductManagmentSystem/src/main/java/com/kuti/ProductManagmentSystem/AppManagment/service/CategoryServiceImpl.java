@@ -1,5 +1,4 @@
 package com.kuti.ProductManagmentSystem.AppManagment.service;
-
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateCategoryRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryNameResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryResponse;
@@ -10,11 +9,12 @@ import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.CategoryRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.ProductRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.service.impl.CategoryService;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,9 +51,12 @@ public class CategoryServiceImpl implements CategoryService {
             for (Long productId : productIds) {
                 Product existingProduct = productRepository.findById(productId)
                         .orElseThrow(() -> new IllegalArgumentException("Product with ID " + productId + " not found."));
+
                 existingProduct.setCategory(category);
+
                 productRepository.save(existingProduct);
             }
+
         }
 
         Category savedCategory = categoryRepository.save(category);
@@ -86,12 +89,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public List<CategoryWithProductsResponse> getAllCategoriesWithProducts() {
         List<Category> categories = categoryRepository.findAll();
 
-        logger.info("Categories:"+categories);
+        logger.info("Categories:" + categories);
 
         return categories.stream()
+                .peek(category -> Hibernate.initialize(category.getProducts()))
                 .map(CategoryMapper::mapToCategoryWithProductsResponse)
                 .collect(Collectors.toList());
     }

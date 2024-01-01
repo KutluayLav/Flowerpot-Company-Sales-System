@@ -24,13 +24,12 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
-    @NotNull(message = "Name is Cannot be Empty!")
+    @NotNull(message = "Name cannot be Empty!")
     private String name;
 
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<>();
-
 
 }

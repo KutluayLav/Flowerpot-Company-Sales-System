@@ -40,13 +40,10 @@ public class Product {
     @JoinColumn(name = "file_id")
     private FileData fileData;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "product_category",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
     private Category category;
+
 
 }
 

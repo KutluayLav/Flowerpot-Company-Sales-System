@@ -88,10 +88,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse getProductById(long id) {
         Optional<Product> product = productRepository.findById(id);
+
+
         if (product.isPresent()){
             ProductResponse productResponse=ProductMapper.mapToProductResponse(product.get());
             return productResponse;
         }
+
         return null;
     }
 
