@@ -29,6 +29,6 @@ public class ProductResponse {
 
     private FileData fileData;
 
-    private Category category;
+    private ProductWithCategoryResponse category;
 
 }

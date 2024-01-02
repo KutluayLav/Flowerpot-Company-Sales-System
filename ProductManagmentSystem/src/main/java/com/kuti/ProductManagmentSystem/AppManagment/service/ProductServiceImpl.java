@@ -89,7 +89,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(long id) {
         Optional<Product> product = productRepository.findById(id);
 
-
         if (product.isPresent()){
             ProductResponse productResponse=ProductMapper.mapToProductResponse(product.get());
             return productResponse;

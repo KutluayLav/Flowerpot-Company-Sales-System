@@ -1,10 +1,7 @@
 package com.kuti.ProductManagmentSystem.AppManagment.mapper;
 
 import com.kuti.ProductManagmentSystem.AppManagment.controller.ProductController;
-import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryResponse;
-import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryWithProductsResponse;
-import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductCategoryNameResponse;
-import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
+import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.*;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Category;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import org.slf4j.Logger;
@@ -59,6 +56,17 @@ public class CategoryMapper {
                         .quantity(product.getQuantity())
                         .fileData(product.getFileData())
                         .category(product.getCategory().getName())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public static List<CategoryNameResponse> mapToCategoryNameResponses(List<Category> categories) {
+        return categories.stream()
+                .map(category -> CategoryNameResponse.builder()
+                        .id(category.getId())
+                        .categoryName(category.getName())
+                        .categoryDescription(category.getDescription())
+                        .message("Category Displayed:"+category.getName())
                         .build())
                 .collect(Collectors.toList());
     }

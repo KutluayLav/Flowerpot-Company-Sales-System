@@ -3,6 +3,7 @@ import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateCategor
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryNameResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryWithProductsResponse;
+import com.kuti.ProductManagmentSystem.AppManagment.exception.CategoryNotFoundException;
 import com.kuti.ProductManagmentSystem.AppManagment.mapper.CategoryMapper;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Category;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.kuti.ProductManagmentSystem.AppManagment.mapper.CategoryMapper.mapToCategoryNameResponses;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -71,41 +74,26 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryNameResponse getAllCategories() {
-
+    public List<CategoryNameResponse> getAllCategories() {
         List<Category> categories =categoryRepository.findAll();
 
-        if (!categories.isEmpty()) {
-            List<String> categoryNames = categories.stream()
-                    .map(Category::getName)
-                    .collect(Collectors.toList());
+        List<CategoryNameResponse> categoryNameResponses;
 
-            List<Long> categoryIds =categories.stream()
-                    .map(Category::getId)
-                    .collect(Collectors.toList());
-
-            return CategoryNameResponse.builder()
-                    .names(categoryNames)
-                    .id(categoryIds)
-                    .message("Category Showing :"+categoryNames)
-                    .build();
+        if (!categories.isEmpty()){
+            categoryNameResponses=mapToCategoryNameResponses(categories);
+        }else {
+            throw new CategoryNotFoundException("Category Does Not Exist");
         }
-        return CategoryNameResponse.builder()
-                .message("Category Not Found in DataBase")
-                .build();
+
+        return categoryNameResponses;
     }
 
     @Override
-    @Transactional
     public List<CategoryWithProductsResponse> getAllCategoriesWithProducts() {
+
         List<Category> categories = categoryRepository.findAll();
 
-        logger.info("Categories:" + categories);
-
-        return categories.stream()
-                .peek(category -> Hibernate.initialize(category.getProducts()))
-                .map(CategoryMapper::mapToCategoryWithProductsResponse)
-                .collect(Collectors.toList());
+        return null;
     }
 
     private void validateCreateCategoryRequest(CreateCategoryRequest createCategoryRequest) {
