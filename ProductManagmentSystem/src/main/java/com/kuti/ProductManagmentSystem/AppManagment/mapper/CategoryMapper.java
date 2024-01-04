@@ -1,38 +1,24 @@
 package com.kuti.ProductManagmentSystem.AppManagment.mapper;
-
-import com.kuti.ProductManagmentSystem.AppManagment.controller.ProductController;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.*;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Category;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.kuti.ProductManagmentSystem.AppManagment.mapper.ProductMapper.mapToProductNameResponseList;
+
 @Component
 public class CategoryMapper {
-
-    private static final Logger logger = LoggerFactory.getLogger(CategoryMapper.class);
-
-    public static CategoryWithProductsResponse mapToCategoryWithProductsResponse(Category category) {
-
-        logger.info("Mapping Category to CategoryWithProductsResponse: {}", category);
-
-        List<Product> products = category.getProducts();
-
-        logger.info("Products: {}", products);
-
-        Set<ProductResponse> productResponses = products.stream()
-                .map(ProductMapper::mapToProductResponse)
-                .collect(Collectors.toSet());
-
-        return CategoryWithProductsResponse.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .description(category.getDescription())
-                .productList(productResponses)
-                .build();
+    public static List<CategoryWithProductsResponse> mapToCategoryWithProductsNameResponse(List<Category> categories) {
+        return categories.stream()
+                .map(category -> CategoryWithProductsResponse.builder()
+                        .id(category.getId())
+                        .name(category.getName())
+                        .description(category.getDescription())
+                        .productList(mapToProductNameResponseList(category.getProducts()))
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public static CategoryResponse mapToCategoryResponse(Category category) {
@@ -70,6 +56,7 @@ public class CategoryMapper {
                         .build())
                 .collect(Collectors.toList());
     }
+
 
 
 

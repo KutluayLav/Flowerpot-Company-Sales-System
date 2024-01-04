@@ -1,11 +1,10 @@
 package com.kuti.ProductManagmentSystem.AppManagment.mapper;
-
+import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductNameResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.ProductWithCategoryResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Category;
 import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +61,12 @@ public class ProductMapper {
         }
 
     }
+
+    public static List<ProductNameResponse> mapToProductNameResponseList(List<Product> products){
+          return products.stream()
+                .map(ProductMapper::mapToProductNameResponse)
+                .collect(Collectors.toList());
+    }
     public static List<ProductResponse> mapToProductResponseList(List<Product> products) {
         return products.stream()
                 .map(ProductMapper::mapToProductResponse)
@@ -73,6 +78,16 @@ public class ProductMapper {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
+                .build();
+    }
+
+    private static ProductNameResponse mapToProductNameResponse(Product product){
+        return ProductNameResponse.builder()
+                .name(product.getProductName())
+                .description(product.getDescription())
+                .id(product.getId())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
                 .build();
     }
 

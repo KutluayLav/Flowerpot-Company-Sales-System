@@ -10,18 +10,13 @@ import com.kuti.ProductManagmentSystem.AppManagment.model.Product;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.CategoryRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.repository.ProductRepository;
 import com.kuti.ProductManagmentSystem.AppManagment.service.impl.CategoryService;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.kuti.ProductManagmentSystem.AppManagment.mapper.CategoryMapper.mapToCategoryNameResponses;
+
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -87,13 +82,16 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryNameResponses;
     }
-
     @Override
     public List<CategoryWithProductsResponse> getAllCategoriesWithProducts() {
 
         List<Category> categories = categoryRepository.findAll();
 
-        return null;
+        if (!categories.isEmpty()) {
+            return CategoryMapper.mapToCategoryWithProductsNameResponse(categories);
+        }else {
+            throw new CategoryNotFoundException("Category Does Not Exist");
+        }
     }
 
     private void validateCreateCategoryRequest(CreateCategoryRequest createCategoryRequest) {

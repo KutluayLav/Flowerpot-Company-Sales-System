@@ -1,6 +1,5 @@
 package com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto;
 
-import com.kuti.ProductManagmentSystem.AppManagment.model.Category;
 import com.kuti.ProductManagmentSystem.AppManagment.model.FileData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

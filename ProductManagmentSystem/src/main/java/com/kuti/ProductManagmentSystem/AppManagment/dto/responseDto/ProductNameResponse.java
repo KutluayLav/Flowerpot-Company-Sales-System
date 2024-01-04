@@ -1,16 +1,17 @@
 package com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryWithProductsResponse {
+public class ProductNameResponse {
 
     private Long id;
 
@@ -18,6 +19,7 @@ public class CategoryWithProductsResponse {
 
     private String description;
 
-    private List<ProductNameResponse> productList;
+    private BigDecimal price;
 
+    private Long quantity;
 }
