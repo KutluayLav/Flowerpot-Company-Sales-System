@@ -109,7 +109,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return null;
     }
-
+    //Kutluay ulutas
     private void validateCreateCategoryRequest(CreateCategoryRequest createCategoryRequest) {
 
         if (createCategoryRequest.getName() == null || createCategoryRequest.getName().isEmpty()) {
