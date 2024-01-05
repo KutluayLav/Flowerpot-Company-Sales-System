@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -55,21 +54,35 @@ public class CategoryController {
         }
 
     }
+    @GetMapping("getCategoryById/{categoryId}")
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable long categoryId){
+        CategoryResponse categoryResponse = categoryService.getCategoryById(categoryId);
+        if (categoryResponse == null){
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(categoryResponse);
+    }
 
     @GetMapping("/getAllCategories")
     public ResponseEntity<List<CategoryNameResponse>> getAllCategories(){
 
         List<CategoryNameResponse> categoryNameResponse=categoryService.getAllCategories();
 
+        if (categoryNameResponse.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
         return ResponseEntity.ok(categoryNameResponse);
     }
 
     @GetMapping("/getAllCategoriesAndProducts")
     public ResponseEntity<List<CategoryWithProductsResponse>> getAllCategoriesAndProducts() {
+
         List<CategoryWithProductsResponse> response = categoryService.getAllCategoriesWithProducts();
+
+        if (response.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
         return ResponseEntity.ok(response);
     }
-
-
-
 }

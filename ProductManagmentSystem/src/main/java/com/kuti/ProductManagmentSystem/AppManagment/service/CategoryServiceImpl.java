@@ -15,7 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static com.kuti.ProductManagmentSystem.AppManagment.mapper.CategoryMapper.mapToCategoryNameResponses;
+import static com.kuti.ProductManagmentSystem.AppManagment.mapper.CategoryMapper.mapToCategoryResponse;
 
 
 @Service
@@ -92,6 +95,19 @@ public class CategoryServiceImpl implements CategoryService {
         }else {
             throw new CategoryNotFoundException("Category Does Not Exist");
         }
+    }
+
+    @Override
+    public CategoryResponse getCategoryById(long id) {
+
+        Optional<Category> category = categoryRepository.findById(id);
+
+        if (!category.isEmpty()){
+            CategoryResponse categoryResponse =mapToCategoryResponse(category.get());
+            return categoryResponse;
+        }
+
+        return null;
     }
 
     private void validateCreateCategoryRequest(CreateCategoryRequest createCategoryRequest) {

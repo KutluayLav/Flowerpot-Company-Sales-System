@@ -15,4 +15,6 @@ public interface CategoryService {
 
     public List<CategoryWithProductsResponse> getAllCategoriesWithProducts();
 
+    public CategoryResponse getCategoryById(long id);
+
 }
