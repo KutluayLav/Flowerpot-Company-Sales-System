@@ -28,28 +28,34 @@ public class FileDataService {
     }
     public FileData uploadImageToFileSystem(MultipartFile file) throws IOException {
 
-        String filePath = UPLOAD_DIR +File.separator+file.getOriginalFilename();
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String newFileName = System.currentTimeMillis() + fileExtension;
 
-        logger.info(FOLDER_NAME +"Folder name adres");
+        String filePath = UPLOAD_DIR + File.separator + newFileName;
+
+        logger.info(FOLDER_NAME + " Folder name adres");
 
         try {
             FileData fileData = fileDataRepository.save(FileData.builder()
-                    .name(file.getOriginalFilename())
+                    .name(newFileName)
                     .type(file.getContentType())
-                    .filePath(file.getOriginalFilename()).build());
+                    .filePath(newFileName).build());
 
             file.transferTo(new File(filePath));
-            logger.info("Resim Yuklendi:"+file.getOriginalFilename());
+            logger.info("Resim Yüklendi:" + newFileName);
             return fileData;
         } catch (IOException e) {
-            logger.error("Hata Resim Yuklenemedi !!! :"+file.getOriginalFilename());
-            throw new FileUploadException("Error uploading file: " + file.getOriginalFilename(),e);
+            logger.error("Hata Resim Yüklenemedi !!! :" + newFileName);
+            throw new FileUploadException("Error uploading file: " + newFileName, e);
         }
     }
 
     public void deleteImage(Long fileId) throws IOException {
 
         Optional<FileData> optionalFileData = fileDataRepository.findById(fileId);
+
+        logger.info("resim Silme islemi deleteImage fileId {}",fileId);
 
         if (optionalFileData.isPresent()) {
             FileData fileData = optionalFileData.get();
