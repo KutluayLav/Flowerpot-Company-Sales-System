@@ -22,15 +22,29 @@ public class CategoryMapper {
     }
 
     public static CategoryResponse mapToCategoryResponse(Category category) {
+        List<ProductCategoryNameResponse> productResponses = null;
+
+        if (category.getProducts() != null) {
+            productResponses = mapToProductCategoryNameResponses(category.getProducts());
+        }
+
+        if (productResponses == null || productResponses.isEmpty()) {
+            return CategoryResponse.builder()
+                    .id(category.getId())
+                    .name(category.getName())
+                    .description(category.getDescription())
+                    .message("Category: " + category.getName() + " Displayed")
+                    .build();
+        }
+
         return CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
                 .message("Category: " + category.getName() + " Displayed")
-                .productList(mapToProductCategoryNameResponses(category.getProducts()))
+                .productList(productResponses)
                 .build();
     }
-
     private static List<ProductCategoryNameResponse> mapToProductCategoryNameResponses(List<Product> products) {
         return products.stream()
                 .map(product -> ProductCategoryNameResponse.builder()

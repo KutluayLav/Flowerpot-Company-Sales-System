@@ -1,5 +1,6 @@
 package com.kuti.ProductManagmentSystem.AppManagment.service.impl;
 
+import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.AddProductToCategoryRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateCategoryRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryNameResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryResponse;
@@ -10,6 +11,8 @@ import java.util.List;
 public interface CategoryService {
 
     public CategoryResponse addCategory(CreateCategoryRequest createCategoryRequest);
+
+    public CategoryResponse addProductToCategory(AddProductToCategoryRequest addProductToCategoryRequest);
 
     public List<CategoryNameResponse> getAllCategories();
 

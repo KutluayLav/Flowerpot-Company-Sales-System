@@ -1,4 +1,5 @@
 package com.kuti.ProductManagmentSystem.AppManagment.service;
+import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.AddProductToCategoryRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateCategoryRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryNameResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryResponse;
@@ -37,6 +38,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse addCategory(CreateCategoryRequest createCategoryRequest) {
+
+        logger.info("Gelen createCategoryRequest isim :{}",createCategoryRequest.getName());
+
         validateCreateCategoryRequest(createCategoryRequest);
 
         if (categoryRepository.existsCategoryByName(createCategoryRequest.getName())) {
@@ -68,6 +72,34 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         Category savedCategory = categoryRepository.save(category);
+        return CategoryMapper.mapToCategoryResponse(savedCategory);
+    }
+
+    @Override
+    public CategoryResponse addProductToCategory(AddProductToCategoryRequest addProductToCategoryRequest) {
+        validateAddProductToCategory(addProductToCategoryRequest);
+
+        var categoryId = addProductToCategoryRequest.getCategoryId();
+
+        Category category = getCategoryByCategoryId(categoryId);
+
+        List<Long> productIds = addProductToCategoryRequest.getProductIds();
+
+        if (productIds != null && !productIds.isEmpty()) {
+            List<Product> products = productRepository.findAllById(productIds);
+
+            for (Product product : products) {
+                if (product.getCategory() != null) {
+                    throw new IllegalArgumentException("Ürün zaten bir kategoriye atanmış: " + product.getProductName());
+                }
+                product.setCategory(category);
+            }
+
+            category.setProducts(new ArrayList<>(products));
+        }
+
+        Category savedCategory = categoryRepository.save(category);
+
         return CategoryMapper.mapToCategoryResponse(savedCategory);
     }
 
@@ -109,6 +141,26 @@ public class CategoryServiceImpl implements CategoryService {
 
         return null;
     }
+
+    private Category getCategoryByCategoryId(long id){
+
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+
+        if (!optionalCategory.isEmpty()){
+            Category category =optionalCategory.get();
+            return category;
+        }
+        return null;
+    }
+
+    private void validateAddProductToCategory(AddProductToCategoryRequest addProductToCategoryRequest){
+
+        if (addProductToCategoryRequest.getCategoryId() == null || addProductToCategoryRequest.getProductIds() == null){
+            throw new IllegalArgumentException("Category Id or Product Ids cannot be null or Empty");
+        }
+
+    }
+
     //Kutluay ulutas
     private void validateCreateCategoryRequest(CreateCategoryRequest createCategoryRequest) {
 

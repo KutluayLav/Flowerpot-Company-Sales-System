@@ -1,5 +1,6 @@
 package com.kuti.ProductManagmentSystem.AppManagment.controller;
 
+import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.AddProductToCategoryRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.requestDto.CreateCategoryRequest;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryNameResponse;
 import com.kuti.ProductManagmentSystem.AppManagment.dto.responseDto.CategoryResponse;
@@ -52,7 +53,6 @@ public class CategoryController {
 
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
     @GetMapping("getCategoryById/{categoryId}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable long categoryId){
@@ -85,4 +85,18 @@ public class CategoryController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/addProductToCategory")
+    public  ResponseEntity<CategoryResponse> addProductToCategory(@RequestBody AddProductToCategoryRequest
+                                                                              addProductToCategoryRequest){
+        CategoryResponse categoryResponse = categoryService.addProductToCategory(addProductToCategoryRequest);
+
+        if (categoryResponse.getName().isEmpty()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+      return ResponseEntity.ok(categoryResponse);
+    }
+
+
 }
