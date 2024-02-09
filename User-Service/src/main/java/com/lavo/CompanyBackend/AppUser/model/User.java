@@ -33,6 +33,7 @@ public class User {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private LocalDateTime createdDate;
+    private LocalDateTime lastLoginDate;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))

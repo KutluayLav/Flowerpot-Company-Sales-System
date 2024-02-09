@@ -20,7 +20,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,6 +78,9 @@ public class UserService implements UserDetailsService {
 
         User user = userOptional.orElseThrow(() ->
                 new UsernameNotFoundException("User not found with email: " + email));
+
+        user.setLastLoginDate(LocalDateTime.now());
+        userRepository.save(user);
 
         Set<GrantedAuthority> authorities = user.getAuthorities().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
@@ -131,14 +137,38 @@ public class UserService implements UserDetailsService {
     }
 
     private DetailsAllUsersResponse userToDetailsAllUsersResponseMapper(User user){
+
+        if (user.getLastLoginDate()==null){
+            return DetailsAllUsersResponse.builder()
+                    .id(user.getId())
+                    .firstname(user.getFirstName())
+                    .lastname(user.getLastName())
+                    .phoneNo(user.getPhoneNo())
+                    .email(user.getEmail())
+                    .createdDate(getCreatedDateText(user.getCreatedDate()))
+                    .roles(user.getAuthorities())
+                    .build();
+        }
         return DetailsAllUsersResponse.builder()
                 .id(user.getId())
                 .firstname(user.getFirstName())
                 .lastname(user.getLastName())
                 .phoneNo(user.getPhoneNo())
                 .email(user.getEmail())
-                .createdDate(user.getCreatedDate().toString())
+                .createdDate(getCreatedDateText(user.getCreatedDate()))
+                .lastLoginDate(getLastLoginText(user.getLastLoginDate()))
                 .roles(user.getAuthorities())
                 .build();
     }
+        private String getLastLoginText(LocalDateTime lastLoginDate) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy 'saat:' HH:mm");
+            String lastSeen = lastLoginDate.format(formatter);
+            return "Son görülme: " + lastSeen;
+        }
+        private String getCreatedDateText(LocalDateTime createdDate){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            String createdTime = createdDate.format(formatter);
+            return createdTime;
+        }
+
 }
