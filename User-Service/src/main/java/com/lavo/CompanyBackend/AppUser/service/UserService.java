@@ -1,6 +1,7 @@
 package com.lavo.CompanyBackend.AppUser.service;
 
 import com.lavo.CompanyBackend.AppUser.requestDto.CreateAccountRequest;
+import com.lavo.CompanyBackend.AppUser.responsesDto.DetailsAllUsersResponse;
 import com.lavo.CompanyBackend.AppUser.responsesDto.DetailsUserResponse;
 import com.lavo.CompanyBackend.AppUser.requestDto.UserConvertDetailsUserRequest;
 import com.lavo.CompanyBackend.AppUser.exception.UserNotFoundException;
@@ -19,10 +20,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,7 +62,8 @@ public class UserService implements UserDetailsService {
                 .credentialsNonExpired(true)
                 .isEnabled(true)
                 .accountNonLocked(true)
-                .authorities(new HashSet<>(Arrays.asList(Role.ROLE_USER)))
+                .createdDate(LocalDateTime.now())
+                .authorities(new HashSet<>(Arrays.asList(Role.ROLE_ADMIN)))
                 .build();
 
         return userRepository.save(newUser);
@@ -111,5 +111,34 @@ public class UserService implements UserDetailsService {
             logger.error("Error getting user details", e);
             throw new RuntimeException("Error getting user details", e);
         }
+    }
+
+    public List<DetailsAllUsersResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        if (users.isEmpty()){
+            throw new UserNotFoundException("Users Not Found Exceptions");
+        }
+
+        List<DetailsAllUsersResponse> responseList = new ArrayList<>();
+
+        for (User user : users) {
+            DetailsAllUsersResponse userDetails = userToDetailsAllUsersResponseMapper(user);
+            responseList.add(userDetails);
+        }
+
+        return responseList;
+    }
+
+    private DetailsAllUsersResponse userToDetailsAllUsersResponseMapper(User user){
+        return DetailsAllUsersResponse.builder()
+                .id(user.getId())
+                .firstname(user.getFirstName())
+                .lastname(user.getLastName())
+                .phoneNo(user.getPhoneNo())
+                .email(user.getEmail())
+                .createdDate(user.getCreatedDate().toString())
+                .roles(user.getAuthorities())
+                .build();
     }
 }

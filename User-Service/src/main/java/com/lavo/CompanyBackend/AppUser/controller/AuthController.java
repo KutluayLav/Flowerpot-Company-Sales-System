@@ -2,10 +2,7 @@ package com.lavo.CompanyBackend.AppUser.controller;
 import com.lavo.CompanyBackend.AppUser.model.RefreshToken;
 import com.lavo.CompanyBackend.AppUser.requestDto.*;
 import com.lavo.CompanyBackend.AppUser.exception.SignUpException;
-import com.lavo.CompanyBackend.AppUser.responsesDto.AuthResponse;
-import com.lavo.CompanyBackend.AppUser.responsesDto.DetailsUserResponse;
-import com.lavo.CompanyBackend.AppUser.responsesDto.RefreshTokenResponse;
-import com.lavo.CompanyBackend.AppUser.responsesDto.SignUpResponse;
+import com.lavo.CompanyBackend.AppUser.responsesDto.*;
 import com.lavo.CompanyBackend.AppUser.service.JwtService;
 import com.lavo.CompanyBackend.AppUser.service.RefreshTokenService;
 import com.lavo.CompanyBackend.AppUser.service.UserService;
@@ -21,6 +18,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -139,6 +138,15 @@ public class AuthController {
                                     .accessToken(accessToken).token(refreshTokenRequest.getToken()).build());
                 }).orElseThrow(() -> new RuntimeException(
                         "Refresh token is not in database!"));
+    }
+
+    @GetMapping("/getallusers")
+    public ResponseEntity<List<DetailsAllUsersResponse>> getAllUsers(){
+
+        List<DetailsAllUsersResponse> detailsAllUsersResponses =userService.getAllUsers();
+
+        return ResponseEntity.ok(detailsAllUsersResponses);
+
     }
 
 
