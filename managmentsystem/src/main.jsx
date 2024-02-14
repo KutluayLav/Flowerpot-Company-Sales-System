@@ -11,6 +11,7 @@ import { HomeScreen } from "./pages/Home";
 import Products from "./pages/Products";
 import Users from "./pages/Users";
 import Profile from "./pages/Profile";
+import AddProduct from "./component/AddProduct";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path:"/profile",
     element:<Profile/>
+  },
+  {
+    path:"/add-product",
+    element:<AddProduct/>
   }
 ]);
 

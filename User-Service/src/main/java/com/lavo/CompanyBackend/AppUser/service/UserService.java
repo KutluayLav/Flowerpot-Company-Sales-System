@@ -161,9 +161,9 @@ public class UserService implements UserDetailsService {
                 .build();
     }
         private String getLastLoginText(LocalDateTime lastLoginDate) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy 'saat:' HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy 'Saat:' HH:mm");
             String lastSeen = lastLoginDate.format(formatter);
-            return "Son görülme: " + lastSeen;
+            return  lastSeen;
         }
         private String getCreatedDateText(LocalDateTime createdDate){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");

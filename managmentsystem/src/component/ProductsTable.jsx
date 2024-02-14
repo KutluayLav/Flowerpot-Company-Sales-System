@@ -1,6 +1,17 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const ProductsTable = () => {
+
+  const navigate = useNavigate();
+
+  const handleAddProductClick = () => {
+  
+    navigate('/add-product');
+  };
+
+
+
   return (
     <div >
       <div class="flex justify-center items-center w-full space-x-60">
@@ -14,7 +25,7 @@ const ProductsTable = () => {
                 </svg>
               </div>
             </div>
-            <button class="bg-green-500 hover:bg-green-700 text-white  py-2 px-4 rounded">
+            <button class="bg-green-500 hover:bg-green-700 text-white  py-2 px-4 rounded" onClick={handleAddProductClick}>
                 Add Product
             </button>
             <button class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
